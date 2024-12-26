@@ -124,4 +124,21 @@ bootstrap();
 ?
 
 ### Validation Pipes
+
+(Official Documentation)[https://docs.nestjs.com/techniques/validation]
+
 ?
+
+## Middlewares
+
+Logger Middleware
+
+```TypeScript
+@Injectable()
+export class LoggerMiddleware implements NestMiddleware {
+  use(req: any, res: any, next: () => void) {
+    console.log('Request ...', new Date.toDataString()); 
+    next();
+  }
+}
+```
