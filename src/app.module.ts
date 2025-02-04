@@ -1,4 +1,9 @@
-import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { SongsModule } from './songs/songs.module';
@@ -11,9 +16,7 @@ import { SongsController } from './songs/songs.controller';
   providers: [AppService],
 })
 export class AppModule implements NestModule {
-
-  configure(consumer : MiddlewareConsumer) {
-
+  configure(consumer: MiddlewareConsumer) {
     // Option #1 - Apply to all routes
     // consumer.apply(LoggerMiddleware).forRoutes('songs');
 
@@ -22,7 +25,6 @@ export class AppModule implements NestModule {
     // .forRoutes({path: 'songs', method: RequestMethod.POST})
 
     // Option #3 - Apply to the controller
-    consumer.apply(LoggerMiddleware).forRoutes(SongsController)
+    consumer.apply(LoggerMiddleware).forRoutes(SongsController);
   }
-
 }

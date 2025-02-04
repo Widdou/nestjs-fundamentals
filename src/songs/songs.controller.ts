@@ -1,37 +1,57 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Delete, Get, Post, Put } from '@nestjs/common';
+import {
+   Body,
+   Controller,
+   Delete,
+   Get,
+   HttpException,
+   HttpStatus,
+   Param,
+   ParseIntPipe,
+   Post,
+   Put,
+} from '@nestjs/common';
 import { SongsService } from './songs.service';
 import { CreateSongDTO } from './dto/create-song-dto';
 
 @Controller('songs')
 export class SongsController {
+   constructor(private readonly songsService: SongsService) {}
 
-    constructor(private readonly songsService : SongsService) {}
+   @Post()
+   create(@Body() createSongDTO: CreateSongDTO) {
+      return this.songsService.create(createSongDTO);
+   }
 
-    @Post()
-    create(@Body() createSongDTO : CreateSongDTO) {
+   @Get()
+   findAll() {
+      try {
+         return this.songsService.findAll();
+      } catch (error) {
+         throw new HttpException(
+            'Server error',
+            HttpStatus.INTERNAL_SERVER_ERROR,
+            { cause: error },
+         );
+      }
+   }
 
-        return this.songsService.create(createSongDTO);
-    }
+   @Get(':id')
+   findOne(
+      @Param('id', ParseIntPipe)
+      id: number,
+   ) {
+      const song = this.songsService.findOne(id);
+      return `find one song on the based on id ${id}\n${JSON.stringify(song)}`;
+   }
 
-    @Get()
-    findAll() {
-        return this.songsService.findAll();
-    }
+   @Put(':id')
+   update() {
+      return 'update song on the based on id';
+   }
 
-    @Get(':id')
-    findOne() {
-        return `find one song on the based on id`
-    }
-
-    @Put(':id')
-    update() {
-        return 'update song on the based on id';
-    }
-
-    @Delete(':id')
-    delete() {
-        return 'delete song on the based on id';
-    }
-
+   @Delete(':id')
+   delete() {
+      return 'delete song on the based on id';
+   }
 }
