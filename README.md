@@ -255,8 +255,74 @@ export class SongsModule {}
 
 Here it's the same module, but it's been defined a mocked object that mimics the SongsService (only the `findAll()` for simplicity), making it already return example data
 
+### Non-Class based Providers
+
+If it's necessary to provide a non-class object, it can be done as well with providers.
+
+For example a connection object to a database.
+
+`src/common/constants/connection.ts`:
+
+```TypeScript
+export const connection: Connection = {
+   CONNECTION_STRING: 'CONNECTION_STRING',
+   DB: 'MYSQL',
+   DBNAME: 'TEST',
+};
+
+export type Connection = {
+   CONNECTION_STRING: string;
+   DB: string;
+   DBNAME: string;
+};
+```
+
+`src/songs/songs.module.ts`:
+
+```TypeScript
+...
+@Module({
+   controllers: [SongsController],
+   providers: [
+      SongsService,
+      {
+         provide: 'CONNECTION',
+         useValue: connection,
+      },
+   ],
+})
+...
+```
+
+Here the `provide` is used to name/label the non-class provider as `"CONNECTION"`, holding the value of the `connection.ts` object.
+
+From this it can be injected into the `song.controller.ts` constructor to be used.
+
+```TypeScript
+...
+@Controller('songs')
+export class SongsController {
+   constructor(
+      private readonly songsService: SongsService,
+      @Inject('CONNECTION')
+      private connection: Connection,
+   ) {
+      console.log(
+         `This is the injected connection string: '${this.connection.CONNECTION_STRING}'`,
+      );
+   }
+...
+}
+```
+
+Just by using the `@Inject()` decorator it will fetch the provider with that name, thus making it available across the controller.
+
 ## Factory Providers -- useFactory()
 
 ## Existing Providers -- useExisting()
 
 ---
+
+```
+
+```
