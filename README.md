@@ -84,13 +84,14 @@ Check out a few resources that may come in handy when working with NestJS:
 - To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
 - Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
 
------
+---
 
 # Tutorial
 
 ## Custom Dependencies
-* class-validator
-* class-transformer
+
+- class-validator
+- class-transformer
 
 ### Class Validation
 
@@ -101,6 +102,7 @@ npm i class-validator class-transformer
 The first class provides @Decorators to use in the classes to validate the definition of a class.
 
 Such as:
+
 ```TypeScript
 @IsNotEmpty()
 @IsArray()
@@ -108,6 +110,7 @@ readonly items : string[];
 ```
 
 ### Auto-validation
+
 We'll start by binding ValidationPipe at the application level, thus **ensuring all endpoints are protected from receiving incorrect data**.
 
 ```TypeScript
@@ -129,16 +132,69 @@ bootstrap();
 
 ?
 
+#### Input Parse Pipe
+
+When passing parameters to a route, we use the decorator `@Param(«name», «Pipe»)`
+This allow us to automatically validate the input type of the parameter, and Nest will handle the error if it is not provided properly, returning an error as `Bad Request`
+
+```TypeScript
+   @Get(':id')
+   findOne(
+      @Param('id', ParseIntPipe)
+      id: number,
+   ) {
+      const song = this.songsService.findOne(id);
+      return `find one song on the based on id ${id}\n${JSON.stringify(song)}`;
+   }
+```
+
+Example error if a string is passed here instead of a number:
+
+```JSON
+{
+  "message": "Validation failed (numeric string is expected)",
+  "error": "Bad Request",
+  "statusCode": 400
+}
+```
+
+It is also possible to define the error message on the pipe validation.
+By instatiating the pipe and providing the options with a message:
+
+```TypeScript
+@Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE}))
+```
+
+#### Custom Validation Pipes
+
+How to have your own validation pipes
+
 ## Middlewares
 
-Logger Middleware
+#### Logger Middleware
 
 ```TypeScript
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {
   use(req: any, res: any, next: () => void) {
-    console.log('Request ...', new Date.toDataString()); 
+    console.log('Request ...', new Date.toDataString());
     next();
   }
 }
 ```
+
+#### Error handler Middleware -- Exception Handling
+
+```TypeScript
+@
+```
+
+It is useful to have a middleware that would catch the unexpected errors within the application, for that:
+
+---
+
+`throw new HttpException()`
+
+## HttpStatus Object Class
+
+HttpStatus.

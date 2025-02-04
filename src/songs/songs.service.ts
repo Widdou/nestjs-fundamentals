@@ -21,7 +21,7 @@ export class SongsService {
       return this.songs;
    }
 
-   findOne(id: number) {
-      return this.songs[id] ?? null;
+   findById(id: number) {
+      return this.songs.filter((x) => x.id == id) ?? null;
    }
 }

@@ -1,3 +1,11 @@
+
+POST https://wild-trains-mate.loca.lt/genSQL
+
+###
+GET https://stupid-rice-grab.loca.lt
+### SEND FETCH SONGS REQUEST
+GET http://localhost:3030/
+
 ### SEND FETCH SONGS REQUEST
 GET http://localhost:3000/songs
 
@@ -9,10 +17,11 @@ POST http://localhost:3000/songs
 Content-Type: application/json
 
 {
-    "title": "Color Esperanza",
-    "artists": ["Diego Torres"],
-    "releaseDate": "2014-10-21",
-    "duration": "03:55"
+	"id": 1,
+	"title": "Color Esperanza",
+	"artists": ["Diego Torres"],
+	"releaseDate": "2014-10-21",
+	"duration": "03:55"
 }
 
 ### Update SONGS REQUEST
@@ -20,4 +29,5 @@ PUT http://localhost:3000/songs/1
 
 ### Delete SONGS REQUEST
 DELETE http://localhost:3000/songs/1
+
 

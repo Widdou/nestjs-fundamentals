@@ -37,11 +37,11 @@ export class SongsController {
    }
 
    @Get(':id')
-   findOne(
+   findById(
       @Param('id', ParseIntPipe)
       id: number,
    ) {
-      const song = this.songsService.findOne(id);
+      const song = this.songsService.findById(id);
       return `find one song on the based on id ${id}\n${JSON.stringify(song)}`;
    }
 
