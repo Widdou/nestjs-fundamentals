@@ -19,7 +19,7 @@ Content-Type: application/json
 {
 	"id": 1,
 	"title": "Color Esperanza",
-	"artists": ["Diego Torres"],
+	"artists": ["Diego Torres", "Julieta Venegas"],
 	"releaseDate": "2014-10-21",
 	"duration": "03:55"
 }
