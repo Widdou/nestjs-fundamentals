@@ -198,3 +198,65 @@ It is useful to have a middleware that would catch the unexpected errors within 
 ## HttpStatus Object Class
 
 HttpStatus.
+
+# Providers
+
+When defining your modules the standard way would be to just declare them in an array, as such:
+
+`songs.module.ts`
+
+```TypeScript
+import { Module } from '@nestjs/common';
+import { SongsController } from './songs.controller';
+import { SongsService } from './songs.service';
+
+@Module({
+   controllers: [SongsController],
+   providers: [SongsService],
+})
+export class SongsModule {}
+```
+
+But you also have the capacity to control the behaviour of the providers by specifiying different hooks to override them.
+
+## Class Provider -- useClass()
+
+## Value Providers -- useValue()
+
+Useful for providing mocking data to a module. For example to test initial data to the application:
+
+```TypeScript
+const mockSongService = {
+   findAll() {
+      return [
+         {
+            id: 0,
+            title: 'Example song',
+            artists: ['Artist #1', 'Artist #2'],
+            releaseDate: '2014-10-21',
+            duration: '12:57',
+         },
+      ];
+   },
+};
+
+@Module({
+   controllers: [SongsController],
+   providers: [
+      SongsService,
+      {
+         provide: SongsService,
+         useValue: mockSongService,
+      },
+   ],
+})
+export class SongsModule {}
+```
+
+Here it's the same module, but it's been defined a mocked object that mimics the SongsService (only the `findAll()` for simplicity), making it already return example data
+
+## Factory Providers -- useFactory()
+
+## Existing Providers -- useExisting()
+
+---
